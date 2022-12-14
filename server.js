@@ -1,9 +1,21 @@
 const express = require('express');
 const app = express();
-const arr = [{id: 0, name: 'Lewis', age: 25}, {id: 1, name: 'Tom', age: 45}, {id: 2, name: 'Evan', age: 35}]
+const fs = require('fs');
 
-app.get('/', function (req, res) {
-  res.send(arr);
+fs.readFile('./data.json', 'utf8', (err, data) => {
+  if (!err) {
+    console.log(data);
+  } else {
+    console.error(err);
+  }
+  let str = JSON.parse(data);
+
+  app.get('/', function (req, res) {
+    res.send('Choose the path : /people');
+  });
+  app.get('/people', function (req, res) {
+    res.send(str);
+  });
 });
 
 app.listen(3000, function () {
